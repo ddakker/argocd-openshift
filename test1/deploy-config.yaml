@@ -1,0 +1,30 @@
+kind: DeploymentConfig
+apiVersion: apps.openshift.io/v1
+metadata:
+  name: jws1
+  namespace: kb-test1
+  labels:
+    app: jws1
+spec:
+  strategy:
+    type: Rolling
+  replicas: 2
+  selector:
+    app: jws1
+    deploymentconfig: jws1
+  template:
+    metadata:
+      labels:
+        app: jws1
+        deploymentconfig: jws1
+    spec:
+      containers:
+        - name: jboss-webserver56-openjdk11-tomcat9-openshift-ubi8
+          image: image-registry.openshift-image-registry.svc:5000/openshift/jboss-webserver56-openjdk11-tomcat9-openshift-ubi8:latest
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+            - containerPort: 8443
+              protocol: TCP
+            - containerPort: 8778
+              protocol: TCP
